@@ -1,5 +1,5 @@
 import { Injectable, Inject, Optional, Type } from '@angular/core';
-import { Actions, ofAction } from '@ngxs/store';
+import { Actions, ofAction, ofActionSuccessful } from '@ngxs/store';
 import { switchMap, tap } from 'rxjs/operators';
 import { EFFECT_METADATA, FEATURE_EFFECTS } from './constans';
 import { Observable, of } from 'rxjs';
@@ -23,7 +23,7 @@ export class EffectStarterService {
           ) {
             this.actions$
               .pipe(
-                ofAction(metadata.action),
+                ofActionSuccessful(metadata.action),
                 switchMap(actionObject => {
                   const effectResult = target[metadata.propertyName](actionObject);
 
@@ -36,7 +36,7 @@ export class EffectStarterService {
               )
               .subscribe();
           }
-        })
+        });
 
       });
     }

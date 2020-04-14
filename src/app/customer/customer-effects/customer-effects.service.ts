@@ -10,7 +10,7 @@ import { tap, map } from 'rxjs/operators';
 })
 export class CustomerEffectsService {
   @Effect(AddCustomer)
-  addCustomer({ payload }: AddCustomer): void{
+  addCustomer({ payload }: AddCustomer): void {
     console.log(payload);
   }
 }
