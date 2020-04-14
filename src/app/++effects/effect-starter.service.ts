@@ -27,7 +27,7 @@ export class EffectStarterService {
                 switchMap(actionObject => {
                   const effectResult = target[metadata.propertyName](actionObject);
 
-                  if (effectResult && effectResult.hasOwnProperty('subscribe')) {
+                  if (effectResult && effectResult['subscribe']) {
                     return effectResult;
                   } else {
                     return of(effectResult);
