@@ -1,17 +1,19 @@
 import { Injectable, Inject, Optional, Type } from '@angular/core';
 import { Actions, ofActionSuccessful } from '@ngxs/store';
-import { switchMap, takeUntil } from 'rxjs/operators';
-import { EFFECT_METADATA, FEATURE_EFFECTS, EFFECT_TERMINATE_METADATA, EFFECT_START_METADATA } from './constans';
+import { switchMap, takeUntil, catchError } from 'rxjs/operators';
+import { EFFECT_METADATA, FEATURE_EFFECTS, EFFECT_TERMINATE_METADATA, EFFECT_START_METADATA, EFFECTS_ERROR_HANDLER } from './constans';
 import { Observable, of, Subject } from 'rxjs';
 import { EffectMetadataInterface } from './interfaces/effect-metadata.interface';
 import { EffectStartMetadataInterface } from './interfaces/effect-start-metadata.interface';
 import { EffectTerminateMetadataInterface } from './interfaces/effect-terminate-metadata.interface';
+import { EffectErrorHandlerInterface } from './interfaces/effect-error-handler.interface';
 
 @Injectable()
 export class EffectStarterService {
   constructor(
     private actions$: Actions,
     @Optional() @Inject(FEATURE_EFFECTS) private effectsClasses: Type<any>[],
+    @Optional() @Inject(EFFECTS_ERROR_HANDLER) private effectErrorHandler: EffectErrorHandlerInterface,
   ) { }
 
   start(): void {
@@ -80,11 +82,21 @@ export class EffectStarterService {
                   switchMap(actionObject => {
                     const effectResult = target[metadata.propertyName](actionObject);
 
-                    if (effectResult && effectResult['subscribe']) {
+                    if (effectResult && typeof effectResult.subscribe === 'function') {
                       return effectResult;
                     } else {
                       return of(effectResult);
                     }
+                  }),
+                  catchError((error) => {
+                    console.warn(`Error occurred in [${metadata.propertyName}:${metadata.action.name}] effect`);
+                    console.warn(error);
+
+                    if (this.effectErrorHandler && typeof this.effectErrorHandler.onError === 'function') {
+                      this.effectErrorHandler.onError(error);
+                    }
+
+                    return of(null);
                   }),
                   takeUntil(onDispose$),
                 )
@@ -108,5 +120,5 @@ function setMethodTrap<T>(targetObject: T, trappedKey: string, callback: Functio
     callback(result);
 
     return result;
-  }
+  };
 }
