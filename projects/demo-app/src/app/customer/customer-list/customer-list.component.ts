@@ -1,10 +1,9 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
-import { Select, Store } from '@ngxs/store';
+import { Select } from '@ngxs/store';
 import { CustomerState } from '../../+state/customer.state';
 import { Observable } from 'rxjs';
-import { CustomerInterface } from 'src/app/interfaces/customer.interface';
-import { AddCustomer } from 'src/app/+state/actions/add-customer';
 import { CustomerEffectsService } from '../customer-effects/customer-effects.service';
+import { CustomerInterface } from '../../interfaces/customer.interface';
 
 @Component({
   selector: 'app-customer-list',

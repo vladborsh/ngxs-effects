@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Effect } from 'src/app/++effects/effect.decorator';
-import { AddCustomer } from 'src/app/+state/actions/add-customer';
+import { AddCustomer } from 'projects/demo-app/src/app/+state/actions/add-customer';
 import { Observable, of } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
-import { EffectsTerminate } from 'src/app/++effects/effects-terminate.decorator';
-import { EffectsStart } from 'src/app/++effects/effects-start.decorator';
+import { Effect, EffectsStart, EffectsTerminate } from '@ngxs-effect';
 
 @Injectable({
   providedIn: 'root'

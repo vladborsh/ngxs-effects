@@ -1,10 +1,15 @@
 import { NgModule, ModuleWithProviders, Type } from '@angular/core';
 import 'reflect-metadata';
-import { EFFECT_METADATA, FEATURE_EFFECTS } from './constans';
+import { FEATURE_EFFECTS } from './constans';
 import { EffectStarterService } from './effect-starter.service';
 
+// @dynamic
 @NgModule()
 export class NgxsEffectsModule {
+  constructor(effectStarterService: EffectStarterService) {
+    effectStarterService.start();
+  }
+
   static forFeature(...effectsClasses: Type<any>[]): ModuleWithProviders {
     return {
       ngModule: NgxsEffectsModule,

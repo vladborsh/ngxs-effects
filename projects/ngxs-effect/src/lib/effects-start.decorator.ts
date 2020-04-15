@@ -1,4 +1,5 @@
 import { EFFECT_START_METADATA } from './constans';
+import { EffectStartMetadataInterface } from './interfaces/effect-start-metadata.interface';
 
 export function EffectsStart<EClassType, ArgsType, ReturnType, ActionObject>() {
   return (
@@ -6,7 +7,7 @@ export function EffectsStart<EClassType, ArgsType, ReturnType, ActionObject>() {
     propertyName: string,
     descriptor: TypedPropertyDescriptor<(args: ActionObject) => ReturnType>
   ) => {
-    const metadata = {
+    const metadata: EffectStartMetadataInterface = {
       propertyName,
     };
 

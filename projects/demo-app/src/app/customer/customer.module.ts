@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { CustomerListComponent } from './customer-list/customer-list.component';
 import { NgxsModule } from '@ngxs/store';
 import { CustomerState } from '../+state/customer.state';
-import { NgxsEffectsModule } from '../++effects/effects.module';
 import { CustomerEffectsService } from './customer-effects/customer-effects.service';
+import { NgxsEffectsModule} from '@ngxs-effect';
 
 @NgModule({
   declarations: [

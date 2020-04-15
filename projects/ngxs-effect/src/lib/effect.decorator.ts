@@ -1,4 +1,5 @@
 import { EFFECT_METADATA } from './constans';
+import { EffectMetadataInterface } from './interfaces/effect-metadata.interface';
 
 export function Effect<EClassType, ArgsType, ReturnType, ActionObject>(
   action: new (...args: ArgsType[]) => ActionObject
@@ -8,7 +9,7 @@ export function Effect<EClassType, ArgsType, ReturnType, ActionObject>(
     propertyName: string,
     descriptor: TypedPropertyDescriptor<(args: ActionObject) => ReturnType>
   ) => {
-    const metadata = {
+    const metadata: EffectMetadataInterface<ArgsType, ActionObject> = {
       action,
       propertyName,
     };

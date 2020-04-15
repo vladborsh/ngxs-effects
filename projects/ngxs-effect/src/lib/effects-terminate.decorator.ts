@@ -1,4 +1,5 @@
 import { EFFECT_TERMINATE_METADATA } from './constans';
+import { EffectTerminateMetadataInterface } from './interfaces/effect-terminate-metadata.interface';
 
 export function EffectsTerminate<EClassType, ArgsType, ReturnType, ActionObject>() {
   return (
@@ -6,7 +7,7 @@ export function EffectsTerminate<EClassType, ArgsType, ReturnType, ActionObject>
     propertyName: string,
     descriptor: TypedPropertyDescriptor<(args: ActionObject) => ReturnType>
   ) => {
-    const metadata = {
+    const metadata: EffectTerminateMetadataInterface = {
       propertyName,
     };
 

@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { CustomerModule } from './customer/customer.module';
 import { NgxsModule } from '@ngxs/store';
-import { environment } from 'src/environments/environment';
-import { NgxsEffectsRootModule } from './++effects/effects-root.module';
+import { environment } from '../environments/environment';
+import { NgxsEffectsModule } from '@ngxs-effect';
 
 @NgModule({
   declarations: [
@@ -16,7 +16,7 @@ import { NgxsEffectsRootModule } from './++effects/effects-root.module';
     NgxsModule.forRoot([], {
       developmentMode: !environment.production
     }),
-    NgxsEffectsRootModule,
+    NgxsEffectsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

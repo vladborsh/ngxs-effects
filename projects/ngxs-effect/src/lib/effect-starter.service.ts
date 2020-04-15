@@ -3,20 +3,23 @@ import { Actions, ofActionSuccessful } from '@ngxs/store';
 import { switchMap, takeUntil } from 'rxjs/operators';
 import { EFFECT_METADATA, FEATURE_EFFECTS, EFFECT_TERMINATE_METADATA, EFFECT_START_METADATA } from './constans';
 import { Observable, of, Subject } from 'rxjs';
+import { EffectMetadataInterface } from './interfaces/effect-metadata.interface';
+import { EffectStartMetadataInterface } from './interfaces/effect-start-metadata.interface';
+import { EffectTerminateMetadataInterface } from './interfaces/effect-terminate-metadata.interface';
 
 @Injectable()
 export class EffectStarterService {
   constructor(
     private actions$: Actions,
-    @Optional() @Inject(FEATURE_EFFECTS) private effectsClasses: any[],
+    @Optional() @Inject(FEATURE_EFFECTS) private effectsClasses: Type<any>[],
   ) { }
 
   start(): void {
     if (this.effectsClasses) {
       this.effectsClasses.forEach(target => {
-        const effectsMetadata = target.constructor[EFFECT_METADATA];
-        const effectsStartMetadata = target.constructor[EFFECT_START_METADATA];
-        const effectsTerminateMetadata = target.constructor[EFFECT_TERMINATE_METADATA];
+        const effectsMetadata: EffectMetadataInterface<any, any>[] = target.constructor[EFFECT_METADATA];
+        const effectsStartMetadata: EffectStartMetadataInterface[] = target.constructor[EFFECT_START_METADATA];
+        const effectsTerminateMetadata: EffectTerminateMetadataInterface[] = target.constructor[EFFECT_TERMINATE_METADATA];
 
         const onStart$ = new Subject<void>();
         const onTerminate$ = new Subject<void>();
@@ -57,7 +60,12 @@ export class EffectStarterService {
     }
   }
 
-  private initEffectsForTarget(effectsMetadata, target, onStart$: Observable<void>, onDispose$: Observable<void>): void {
+  private initEffectsForTarget<T>(
+    effectsMetadata: EffectMetadataInterface<any, any>[],
+    target: Type<T>,
+    onStart$: Observable<void>,
+    onDispose$: Observable<void>,
+  ): void {
     effectsMetadata.forEach(metadata => {
       if (metadata
         && hasMetadataProp(target, metadata.propertyName)
@@ -92,7 +100,7 @@ function hasMetadataProp<T>(target: Type<T>, propName: string): boolean {
   return Object.getOwnPropertyNames(Object.getPrototypeOf(target)).includes(propName);
 }
 
-function setMethodTrap(targetObject: Object, trappedKey: string, callback: Function) {
+function setMethodTrap<T>(targetObject: T, trappedKey: string, callback: Function) {
   const originMethod = targetObject[trappedKey];
 
   Object.getPrototypeOf(targetObject)[trappedKey] = function(...args) {
