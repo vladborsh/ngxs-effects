@@ -112,13 +112,15 @@ function hasMetadataProp<T>(target: Type<T>, propName: string): boolean {
   return Object.getOwnPropertyNames(Object.getPrototypeOf(target)).includes(propName);
 }
 
-function setMethodTrap<T>(targetObject: T, trappedKey: string, callback: Function) {
+function setMethodTrap<T extends {}>(targetObject: T, trappedKey: string, callback: (arg: any) => any) {
   const originMethod = targetObject[trappedKey];
 
-  Object.getPrototypeOf(targetObject)[trappedKey] = function(...args) {
-    const result = originMethod.apply(this, args);
-    callback(result);
+  if (typeof originMethod === 'function') {
+    Object.getPrototypeOf(targetObject)[trappedKey] = function(...args) {
+      const result = originMethod.apply(this, args);
+      callback(result);
 
-    return result;
-  };
+      return result;
+    };
+  }
 }

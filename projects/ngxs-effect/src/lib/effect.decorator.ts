@@ -1,8 +1,9 @@
 import { EFFECT_METADATA } from './constans';
 import { EffectMetadataInterface } from './interfaces/effect-metadata.interface';
+import { Type } from '@angular/core';
 
 export function Effect<EClassType, ArgsType, ReturnType, ActionObject>(
-  action: new (...args: ArgsType[]) => ActionObject
+  action: Type<ActionObject>
 ) {
   return (
     target: EClassType,
