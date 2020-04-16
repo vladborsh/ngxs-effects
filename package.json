@@ -8,8 +8,9 @@
     "demo-app:test": "ng test demo-app",
     "demo-app:lint": "ng lint demo-app",
     "ngxs-effect:build": "ng build ngxs-effect",
-    "ngxs-effect:test": "ng test ngxs-effect",
-    "ngxs-effect:lint": "ng lint ngxs-effect"
+    "ngxs-effect:test": "ng test ngxs-effect --configuration=ci",
+    "ngxs-effect:lint": "ng lint ngxs-effect",
+    "ngxs-effect:test:watch": "ng test ngxs-effect"
   },
   "private": true,
   "dependencies": {

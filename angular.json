@@ -22,6 +22,19 @@
             "main": "projects/ngxs-effect/src/test.ts",
             "tsConfig": "projects/ngxs-effect/tsconfig.spec.json",
             "karmaConfig": "projects/ngxs-effect/karma.conf.js"
+          },
+          "configurations": {
+            "default": {},
+            "ci": {
+              "karmaConfig": "projects/ngxs-effect/karma.conf.ci.js"
+            },
+            "watch": {
+              "watch": true
+            },
+            "coverage": {
+              "sourceMap": true,
+              "codeCoverage": true
+            }
           }
         },
         "lint": {
