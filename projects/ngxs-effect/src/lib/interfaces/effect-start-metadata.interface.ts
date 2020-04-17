@@ -1,3 +1,3 @@
 export interface EffectStartMetadataInterface {
-  propertyName: string;
+    propertyName: string;
 }

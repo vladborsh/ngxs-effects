@@ -7,18 +7,18 @@ import { environment } from '../environments/environment';
 import { NgxsEffectsModule } from '@ngxs-effect';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
-  imports: [
-    BrowserModule,
-    CustomerModule,
-    NgxsModule.forRoot([], {
-      developmentMode: !environment.production
-    }),
-    NgxsEffectsModule,
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+    ],
+    imports: [
+        BrowserModule,
+        CustomerModule,
+        NgxsModule.forRoot([], {
+            developmentMode: !environment.production
+        }),
+        NgxsEffectsModule,
+    ],
+    providers: [],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

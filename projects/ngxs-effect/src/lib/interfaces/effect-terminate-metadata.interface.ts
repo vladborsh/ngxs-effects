@@ -1,3 +1,3 @@
 export interface EffectTerminateMetadataInterface {
-  propertyName: string;
+    propertyName: string;
 }

@@ -4,6 +4,7 @@ node_js:
 install:
   - npm install
 script:
+  - npm run demo-app:lint
   - npm run ngxs-effect:lint
   - npm run ngxs-effect:test
   - npm run ngxs-effect:build

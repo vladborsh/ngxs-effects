@@ -6,21 +6,21 @@ import { CustomerEffectsService } from '../customer-effects/customer-effects.ser
 import { CustomerInterface } from '../../interfaces/customer.interface';
 
 @Component({
-  selector: 'app-customer-list',
-  templateUrl: './customer-list.component.html',
-  styleUrls: ['./customer-list.component.sass'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-customer-list',
+    templateUrl: './customer-list.component.html',
+    styleUrls: ['./customer-list.component.sass'],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CustomerListComponent implements OnInit, OnDestroy{
-  @Select(CustomerState.customerList) public readonly customersList$: Observable<CustomerInterface[]>;
+export class CustomerListComponent implements OnInit, OnDestroy {
+    @Select(CustomerState.customerList) public readonly customersList$: Observable<CustomerInterface[]>;
 
-  constructor(private customerEffectsService: CustomerEffectsService) {}
+    constructor(private customerEffectsService: CustomerEffectsService) {}
 
-  ngOnInit(): void {
-    this.customerEffectsService.start();
-  }
+    ngOnInit(): void {
+        this.customerEffectsService.start();
+    }
 
-  ngOnDestroy(): void {
-    this.customerEffectsService.terminate();
-  }
+    ngOnDestroy(): void {
+        this.customerEffectsService.terminate();
+    }
 }

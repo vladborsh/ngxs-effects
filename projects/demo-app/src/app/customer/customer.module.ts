@@ -7,16 +7,16 @@ import { CustomerEffectsService } from './customer-effects/customer-effects.serv
 import { NgxsEffectsModule} from '@ngxs-effect';
 
 @NgModule({
-  declarations: [
-    CustomerListComponent,
-  ],
-  exports: [
-    CustomerListComponent,
-  ],
-  imports: [
-    CommonModule,
-    NgxsModule.forFeature([CustomerState]),
-    NgxsEffectsModule.forFeature(CustomerEffectsService),
-  ]
+    declarations: [
+        CustomerListComponent,
+    ],
+    exports: [
+        CustomerListComponent,
+    ],
+    imports: [
+        CommonModule,
+        NgxsModule.forFeature([CustomerState]),
+        NgxsEffectsModule.forFeature(CustomerEffectsService),
+    ]
 })
 export class CustomerModule { }

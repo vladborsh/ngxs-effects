@@ -1,3 +1,3 @@
 export interface EffectErrorHandlerInterface {
-  onError: (error: any) => void;
+    onError: (error: any) => void;
 }

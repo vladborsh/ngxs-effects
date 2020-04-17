@@ -6,22 +6,22 @@ import { EffectStarterService } from './effect-starter.service';
 // @dynamic
 @NgModule()
 export class NgxsEffectsModule {
-  constructor(effectStarterService: EffectStarterService) {
-    effectStarterService.start();
-  }
+    constructor(effectStarterService: EffectStarterService) {
+        effectStarterService.start();
+    }
 
-  static forFeature(...effectsClasses: Type<any>[]): ModuleWithProviders {
-    return {
-      ngModule: NgxsEffectsModule,
-      providers: [
-        EffectStarterService,
-        ...effectsClasses.map(effect => ({
-          provide: FEATURE_EFFECTS,
-          multi: true,
-          useClass: effect,
-        })),
-      ],
-    };
-  }
+    static forFeature(...effectsClasses: Type<any>[]): ModuleWithProviders {
+        return {
+            ngModule: NgxsEffectsModule,
+            providers: [
+                EffectStarterService,
+                ...effectsClasses.map(effect => ({
+                    provide: FEATURE_EFFECTS,
+                    multi: true,
+                    useClass: effect,
+                })),
+            ],
+        };
+    }
 }
 
