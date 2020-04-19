@@ -9,10 +9,11 @@ export function Effect<EClassType, ArgsType, ReturnType, ActionObject>(
         target: EClassType,
         propertyName: string,
         descriptor: TypedPropertyDescriptor<(args: ActionObject) => ReturnType>
-    ) => {
+    ): void => {
         const metadata: EffectMetadataInterface<ArgsType, ActionObject> = {
             action,
             propertyName,
+            metadataName: 'EFFECT_METADATA',
         };
 
         if (target.constructor.hasOwnProperty(EFFECT_METADATA)) {

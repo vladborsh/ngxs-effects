@@ -32,8 +32,13 @@ class StateStub {
 }
 
 describe('EffectStarterService', () => {
+    let result: string = null;
+
+    afterEach(() => {
+        result = null;
+    });
+
     describe('should start simple effect', () => {
-        let result: string = null;
 
         beforeEach(() => {
             class EffectsStub {
@@ -51,10 +56,6 @@ describe('EffectStarterService', () => {
                     NgxsEffectsModule.forFeature(EffectsStub),
                 ],
             });
-        });
-
-        afterEach(() => {
-            result = null;
         });
 
         it('should inject', () => {
@@ -80,7 +81,6 @@ describe('EffectStarterService', () => {
     });
 
     describe('should start several effects', () => {
-        let result: string = null;
 
         beforeEach(() => {
             class EffectsStub {
@@ -103,10 +103,6 @@ describe('EffectStarterService', () => {
                     NgxsEffectsModule.forFeature(EffectsStub),
                 ],
             });
-        });
-
-        afterEach(() => {
-            result = null;
         });
 
         it('should trigger effects on specific actions', () => {
@@ -133,7 +129,6 @@ describe('EffectStarterService', () => {
     });
 
     describe('should start effects processing after effect init invocation', () => {
-        let result: string = null;
 
         beforeEach(() => {
             class EffectsStub {
@@ -154,10 +149,6 @@ describe('EffectStarterService', () => {
                     NgxsEffectsModule.forFeature(EffectsStub),
                 ],
             });
-        });
-
-        afterEach(() => {
-            result = null;
         });
 
         it('should not trigger effects on specific actions if init method was not invoked', () => {
@@ -191,8 +182,6 @@ describe('EffectStarterService', () => {
     });
 
     describe('should stop effects processing after effect terminate invocation', () => {
-        let result: string;
-
         beforeEach(() => {
             class EffectsStub {
                 @Effect(ActionA)
