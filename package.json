@@ -1,10 +1,26 @@
 {
   "name": "ngxs-effects",
   "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vladborsh/ngxs-effects.git"
+  },
+  "keywords": [
+    "redux",
+    "state",
+    "ngxs",
+    "angular",
+    "ng",
+    "effects",
+    "ngxs-effects",
+    "ngxs-plugin",
+    "ngxs-ngrxs-effects"
+  ],
   "scripts": {
     "ng": "ng",
     "start": "ng serve demo-app",
-    "lint": "",
+    "lint": "npm run ngxs-effect:lint",
+    "test": "npm run ngxs-effect:test",
     "demo-app:build": "ng build demo-app",
     "demo-app:test": "ng test demo-app",
     "demo-app:lint": "npx eslint -c .eslintrc.js 'projects/demo-app/**/*.ts' --fix",
