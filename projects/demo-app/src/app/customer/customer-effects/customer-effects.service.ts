@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AddCustomer } from 'projects/demo-app/src/app/+state/actions/add-customer';
-import { Observable, of, throwError } from 'rxjs';
-import { tap, map, switchMapTo } from 'rxjs/operators';
-import { Effect, EffectsStart, EffectsTerminate } from '@ngxs-effect';
+import { Observable, of } from 'rxjs';
+import { tap, map } from 'rxjs/operators';
+import { Effect, EffectsStart, EffectsTerminate } from 'ngxs-effects';
 
 @Injectable({
     providedIn: 'root',
@@ -17,8 +17,8 @@ export class CustomerEffectsService {
     addCustomerObs({ payload }: AddCustomer): Observable<any> {
         return of('hello')
             .pipe(
-                map(() => `hello ${payload}`), tap(v => console.log(v)),
-                switchMapTo(throwError(new Error('hello'))),
+                map(() => `hello ${payload}`),
+                tap(v => console.log(v)),
             );
     }
 
