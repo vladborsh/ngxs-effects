@@ -1,9 +1,15 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { NgxsModule, State, Action, StateContext, Store } from '@ngxs/store';
-import { Effect, NgxsEffectsModule, EffectsStart, EffectsTerminate, EFFECTS_ERROR_HANDLER } from '../public-api';
+import {
+    Effect,
+    NgxsEffectsModule,
+    EffectsStart,
+    EffectsTerminate,
+    EFFECTS_ERROR_HANDLER,
+    EffectErrorHandlerInterface,
+} from '../public-api';
 import { EffectStarterService } from '../lib/effect-starter.service';
 import { InjectionToken } from '@angular/core';
-import { EffectErrorHandlerInterface } from 'dist/ngxs-effect/public-api';
 import { tap } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
 
@@ -82,7 +88,6 @@ describe('EffectStarterService', () => {
             expect(selectResult).toEqual({ state: { 'test-id': { id: 'test-id', name: 'test-name'} } });
         }));
     });
-
 
     describe('should start observable effect', () => {
         beforeEach(() => {
