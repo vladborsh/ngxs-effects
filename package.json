@@ -1,13 +1,15 @@
 {
   "name": "ngxs-effects",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vladborsh/ngxs-effects.git"
   },
   "main": "./dist/ngxs-effect/bundles/ngxs-effect.umd.js",
   "types": "./dist/ngxs-effect/ngxs-effect.d.ts",
-  "files": [ "dist/ngxs-effect" ],
+  "files": [
+    "dist/ngxs-effect"
+  ],
   "keywords": [
     "redux",
     "state",
