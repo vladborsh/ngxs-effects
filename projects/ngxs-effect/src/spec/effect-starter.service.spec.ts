@@ -1,8 +1,11 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { NgxsModule, State, Action, StateContext, Store } from '@ngxs/store';
-import { Effect, NgxsEffectsModule, EffectsStart, EffectsTerminate } from '../public-api';
+import { Effect, NgxsEffectsModule, EffectsStart, EffectsTerminate, EFFECTS_ERROR_HANDLER } from '../public-api';
 import { EffectStarterService } from '../lib/effect-starter.service';
 import { InjectionToken } from '@angular/core';
+import { EffectErrorHandlerInterface } from 'dist/ngxs-effect/public-api';
+import { tap } from 'rxjs/operators';
+import { of, Observable } from 'rxjs';
 
 class ActionA {
     static type = 'Action A';
@@ -80,7 +83,47 @@ describe('EffectStarterService', () => {
         }));
     });
 
-    describe('should start several effects', () => {
+
+    describe('should start observable effect', () => {
+        beforeEach(() => {
+            class EffectsStub {
+                @Effect(ActionA)
+                a({payload}: ActionA): Observable<any> {
+                    return of(payload.name)
+                        .pipe(
+                            tap(value => result = value),
+                        );
+                }
+            }
+
+            TestBed.configureTestingModule({
+                providers: [{ provide: USER_DEFINED_EFFECT, useClass: EffectsStub }],
+                imports: [
+                    NgxsModule.forRoot([StateStub]),
+                    NgxsEffectsModule,
+                    NgxsEffectsModule.forFeature(EffectsStub),
+                ],
+            });
+        });
+
+        it('should trigger effects on specific actions', () => {
+            const store: Store = TestBed.get(Store);
+            store.dispatch(new ActionA({ id: 'test-id', name: 'test-name'}));
+            expect(result).toEqual('test-name');
+        });
+
+        it('should not interrupt action processing', fakeAsync(() => {
+            const store: Store = TestBed.get(Store);
+            store.dispatch(new ActionA({ id: 'test-id', name: 'test-name'}));
+            let selectResult;
+            store.select(state => state)
+                .subscribe(state => selectResult = state);
+            tick();
+            expect(selectResult).toEqual({ state: { 'test-id': { id: 'test-id', name: 'test-name'} } });
+        }));
+    });
+
+    describe('should start several effects in service', () => {
 
         beforeEach(() => {
             class EffectsStub {
@@ -232,5 +275,58 @@ describe('EffectStarterService', () => {
             tick();
             expect(selectResult).toEqual({ state: { 'test-id': null } });
         }));
+    });
+
+    describe('should notify error custom error handler about errors', () => {
+        beforeEach(() => {
+            class EffectsStub {
+                @Effect(ActionA)
+                a(): void {
+                    throw new Error('test-error');
+                }
+            }
+
+            class ErrorHandlerStub implements EffectErrorHandlerInterface {
+                onError(error: Error): void {
+                    result = error.message;
+                }
+            }
+
+            TestBed.configureTestingModule({
+                providers: [
+                    { provide: USER_DEFINED_EFFECT, useClass: EffectsStub },
+                    { provide: EFFECTS_ERROR_HANDLER, useClass: ErrorHandlerStub },
+                ],
+                imports: [
+                    NgxsModule.forRoot([StateStub]),
+                    NgxsEffectsModule,
+                    NgxsEffectsModule.forFeature(EffectsStub),
+                ],
+            });
+        });
+
+        it('should catch errors with custom error handler', () => {
+            const store: Store = TestBed.get(Store);
+            store.dispatch(new ActionA({ id: 'test-id', name: 'test-name'}));
+            expect(result).toEqual('test-error');
+        });
+    });
+
+    describe('should correctly works without any effects', () => {
+        beforeEach(() => {
+            TestBed.configureTestingModule({
+                imports: [
+                    NgxsModule.forRoot([StateStub]),
+                    NgxsEffectsModule,
+                    NgxsEffectsModule.forFeature(),
+                ],
+            });
+        });
+
+        it('should not trigger any effects', () => {
+            const store: Store = TestBed.get(Store);
+            store.dispatch(new ActionA({ id: 'test-id', name: 'test-name'}));
+            expect(result).toEqual(null);
+        });
     });
 });

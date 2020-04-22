@@ -76,4 +76,41 @@ describe('Effect Decorator', () => {
             expect(hasMetadata({ propertyName: 'stop', metadataName: 'EFFECT_TERMINATE_METADATA' }, service)).toBeTruthy();
         });
     });
+
+    describe('should set multi metadata if used multiple times', () => {
+        beforeEach(() => {
+            class EffectsStub {
+                @EffectsTerminate()
+                stop(): void {
+                    result = 'test';
+                }
+
+                @EffectsTerminate()
+                terminate(): void {
+                    result = 'test 2';
+                }
+            }
+
+            TestBed.configureTestingModule({
+                providers: [{ provide: USER_DEFINED_EFFECT, useClass: EffectsStub }],
+                imports: [
+                    NgxsModule.forRoot([StateStub]),
+                    NgxsEffectsModule,
+                    NgxsEffectsModule.forFeature(EffectsStub),
+                ],
+            });
+        });
+
+        it('should set metadata for first method', () => {
+            const service = TestBed.get(USER_DEFINED_EFFECT);
+
+            expect(hasMetadata({ propertyName: 'stop', metadataName: 'EFFECT_TERMINATE_METADATA' }, service)).toBeTruthy();
+        });
+
+        it('should set metadata for second method', () => {
+            const service = TestBed.get(USER_DEFINED_EFFECT);
+
+            expect(hasMetadata({ propertyName: 'terminate', metadataName: 'EFFECT_TERMINATE_METADATA' }, service)).toBeTruthy();
+        });
+    });
 });
