@@ -186,6 +186,36 @@ export class PonyListComponent implements OnInit, OnDestroy {
 }
 ```
 
+## Error handling
+
+an error that can happen during the operation of the effect will stop the processing of actions on the method where it occurred. other effects in the same service continue to work. in order to catch errors occurring in the effects you can define your ```EFFECTS_ERROR_HANDLER```
+
+First you need to implement ```EffectErrorHandlerInterface```
+
+```typescript
+@Injectable({
+    providedIn: 'root',
+})
+class CustomEffectErrorHandler implements EffectErrorHandlerInterface {
+    onError(error: Error): void {
+        console.log(error);
+    }
+}
+```
+
+Next uoy need to provide this services with ```EFFECTS_ERROR_HANDLER``` token
+
+```typescript
+@NgModule({
+    providers: [
+        // ...
+        { provide: EFFECTS_ERROR_HANDLER, useExisting: CustomEffectErrorHandler }
+    ],
+    // ...
+})
+export class AppModule {}
+```
+
 ## Contribute
 
 ### Start
