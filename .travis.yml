@@ -3,8 +3,17 @@ node_js:
   - 10.16
 install:
   - npm install
-script:
-  - npm run demo-app:lint
-  - npm run ngxs-effect:lint
-  - npm run ngxs-effect:test
-  - npm run ngxs-effect:build
+jobs:
+  include:
+    - stage: test
+      script: 
+        - npm run demo-app:lint
+        - npm run ngxs-effect:lint
+        - npm run ngxs-effect:test
+        - npm run ngxs-effect:build
+    - stage: coveralls
+      if: branch = master
+      script:
+        - npm run coveralls
+
+  

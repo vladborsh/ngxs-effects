@@ -26,7 +26,9 @@
           "configurations": {
             "default": {},
             "ci": {
-              "karmaConfig": "projects/ngxs-effect/karma.conf.ci.js"
+              "karmaConfig": "projects/ngxs-effect/karma.conf.ci.js",
+              "sourceMap": true,
+              "codeCoverage": true
             },
             "watch": {
               "watch": true

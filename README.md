@@ -1,6 +1,8 @@
 # Ngxs-Effects
 
 [![Build Status](https://travis-ci.com/vladborsh/ngxs-effects.svg?branch=master)](https://travis-ci.com/vladborsh/ngxs-effects)
+[![Coverage Status](https://coveralls.io/repos/github/vladborsh/ngxs-effects/badge.svg?branch=master)](https://coveralls.io/github/vladborsh/ngxs-effects?branch=master)
+![npm](https://img.shields.io/npm/v/ngxs-effects?color=81d334)
 
 ## Goal of ngxs-effects
 
