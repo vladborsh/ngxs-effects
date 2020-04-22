@@ -2,9 +2,15 @@
 
 [![Build Status](https://travis-ci.com/vladborsh/ngxs-effects.svg?branch=master)](https://travis-ci.com/vladborsh/ngxs-effects)
 
-## Goal ng ngxs-effects
+## Goal of ngxs-effects
 
 The main goal is to gracefully separate the effects logic from the definition of the repository itself. Creating effects should be easy without worrying about managing your subscriptions and unsubscribes. Just mark how you would like to react to certain events in your store. We will do the rest for you.
+
+## Quick links
+
+* 🚀 Watch [live demo](https://stackblitz.com/github/vladborsh/ngxs-effects-demo?file=src%2Fapp%2Fcustomer%2Fcustomer-effects%2Fcustomer-effects.service.ts) 
+* 📖 Check our [documentation](https://github.com/vladborsh/ngxs-effects#quick-start)
+* 🐞 Report [issues](https://github.com/vladborsh/ngxs-effects/issues/new/choose)
 
 ## Features
 
@@ -12,7 +18,14 @@ The main goal is to gracefully separate the effects logic from the definition of
 * Application-wide effect / feature-wide effects
 * Application-lifetime effects / feature-lifetime effects
 * Decorators for for effects logic and effects initialization and termination
+* Custom error handlers
 * Limit lifetime effects
+
+## Installation
+
+```
+npm i -S ngxs-effects
+```
 
 ## Quick start
 
