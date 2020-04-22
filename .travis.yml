@@ -11,9 +11,10 @@ jobs:
         - npm run ngxs-effect:lint
         - npm run ngxs-effect:test
         - npm run ngxs-effect:build
-    - stage: coveralls
+    - stage: master
       if: branch = master
       script:
+        - npm run ngxs-effect:build
         - npm run coveralls
 
   
