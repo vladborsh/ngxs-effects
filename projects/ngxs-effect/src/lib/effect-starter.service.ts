@@ -2,12 +2,13 @@ import { Injectable, Inject, Optional, Type } from '@angular/core';
 import { Actions, ofActionSuccessful } from '@ngxs/store';
 import { switchMap, takeUntil, catchError, mergeMap } from 'rxjs/operators';
 import { EFFECT_METADATA, FEATURE_EFFECTS, EFFECT_TERMINATE_METADATA, EFFECT_START_METADATA, EFFECTS_ERROR_HANDLER } from './constans';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of, Subject, pipe, OperatorFunction } from 'rxjs';
 import { EffectMetadataInterface } from './interfaces/effect-metadata.interface';
 import { EffectStartMetadataInterface } from './interfaces/effect-start-metadata.interface';
 import { EffectTerminateMetadataInterface } from './interfaces/effect-terminate-metadata.interface';
 import { EffectErrorHandlerInterface } from './interfaces/effect-error-handler.interface';
 import { setMethodTrap, hasMetadata } from './utils';
+import { ActionContext } from '@ngxs/store/src/actions-stream';
 
 @Injectable()
 export class EffectStarterService {
@@ -29,7 +30,6 @@ export class EffectStarterService {
             const onStart$ = new Subject<void>();
             const onTerminate$ = new Subject<void>();
             let hasStartHook = false;
-            let hasDisposeHook = false;
 
             if (effectsStartMetadata && effectsStartMetadata.length) {
                 effectsStartMetadata
@@ -43,17 +43,16 @@ export class EffectStarterService {
             if (effectsTerminateMetadata && effectsTerminateMetadata.length) {
                 effectsTerminateMetadata
                     .filter(metadata => hasMetadata(metadata, target))
-                    .forEach(metadata => {
-                        hasDisposeHook = true;
-                        setMethodTrap(target, metadata.propertyName, () => onTerminate$.next());
-                    });
+                    .forEach(metadata =>
+                        setMethodTrap(target, metadata.propertyName, () => onTerminate$.next()),
+                    );
             }
 
             if (effectsMetadata && effectsMetadata.length) {
                 effectsMetadata
                     .filter(metadata => hasMetadata(metadata, target))
                     .forEach(metadata =>
-                        this.initEffectsForTarget(
+                        this.setupTargetEffects(
                             metadata,
                             target,
                             hasStartHook ? onStart$ : of(null),
@@ -64,7 +63,7 @@ export class EffectStarterService {
         });
     }
 
-    private initEffectsForTarget<T>(
+    private setupTargetEffects<T>(
         metadata: EffectMetadataInterface<any, any>,
         target: Type<T>,
         onStart$: Observable<void>,
@@ -75,30 +74,43 @@ export class EffectStarterService {
                 switchMap(() =>
                     this.actions$
                         .pipe(
-                            ofActionSuccessful(metadata.action),
-                            mergeMap(actionObject => {
-                                const effectResult = target[metadata.propertyName](actionObject);
-
-                                if (effectResult && typeof effectResult.subscribe === 'function') {
-                                    return effectResult;
-                                } else {
-                                    return of(effectResult);
-                                }
-                            }),
-                            catchError((error) => {
-                                console.warn(`Error occurred in [${metadata.propertyName}:${metadata.action.name}] effect`);
-                                console.warn(error);
-
-                                if (this.effectErrorHandler && typeof this.effectErrorHandler.onError === 'function') {
-                                    this.effectErrorHandler.onError(error);
-                                }
-
-                                return of(null);
-                            }),
+                            this.setupActionEffectProcessor(metadata, target),
                             takeUntil(onDispose$),
                         )
                 )
             )
             .subscribe();
+    }
+
+    private setupActionEffectProcessor<T, Action>(
+        metadata: EffectMetadataInterface<any, any>,
+        target: Type<T>,
+    ): OperatorFunction<ActionContext<Action>, Observable<any>> {
+        return pipe(
+            ofActionSuccessful(metadata.action),
+            mergeMap((actionObject: Action) => this.executeEffect$(actionObject, metadata.propertyName, target)),
+            catchError((error) => this.catchEffectError$(error, metadata.propertyName, metadata.action.name)),
+        );
+    }
+
+    private executeEffect$<T, Action>(actionObject: Action, propertyName: string, target: Type<T>): Observable<any> {
+        const effectResult = target[propertyName](actionObject);
+
+        if (effectResult && typeof effectResult.subscribe === 'function') {
+            return effectResult;
+        } else {
+            return of(effectResult);
+        }
+    }
+
+    private catchEffectError$(error: Error, propertyName: string, actionName: string): Observable<any> {
+        console.warn(`Error occurred in [${propertyName}:${actionName}] effect`);
+        console.warn(error);
+
+        if (this.effectErrorHandler && typeof this.effectErrorHandler.onError === 'function') {
+            this.effectErrorHandler.onError(error);
+        }
+
+        return of(null);
     }
 }
