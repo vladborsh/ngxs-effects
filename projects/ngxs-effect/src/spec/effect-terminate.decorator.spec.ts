@@ -3,6 +3,7 @@ import { NgxsModule, State, Action, StateContext } from '@ngxs/store';
 import { NgxsEffectsModule, EffectsTerminate } from '../public-api';
 import { InjectionToken } from '@angular/core';
 import { hasMetadata } from '../lib/utils';
+import { EffectMetadataType } from '../lib/config/effect-metadata-type.enum';
 
 class ActionA {
     static type = 'Action A';
@@ -73,7 +74,7 @@ describe('Effect Decorator', () => {
         it('should set metadata', () => {
             const service = TestBed.get(USER_DEFINED_EFFECT);
 
-            expect(hasMetadata({ propertyName: 'stop', metadataName: 'EFFECT_TERMINATE_METADATA' }, service)).toBeTruthy();
+            expect(hasMetadata({ propertyName: 'stop', metadataName: EffectMetadataType.EFFECT_TERMINATE_METADATA }, service)).toBeTruthy();
         });
     });
 
@@ -104,13 +105,19 @@ describe('Effect Decorator', () => {
         it('should set metadata for first method', () => {
             const service = TestBed.get(USER_DEFINED_EFFECT);
 
-            expect(hasMetadata({ propertyName: 'stop', metadataName: 'EFFECT_TERMINATE_METADATA' }, service)).toBeTruthy();
+            expect(hasMetadata({
+                propertyName: 'stop',
+                metadataName: EffectMetadataType.EFFECT_TERMINATE_METADATA,
+            }, service)).toBeTruthy();
         });
 
         it('should set metadata for second method', () => {
             const service = TestBed.get(USER_DEFINED_EFFECT);
 
-            expect(hasMetadata({ propertyName: 'terminate', metadataName: 'EFFECT_TERMINATE_METADATA' }, service)).toBeTruthy();
+            expect(hasMetadata({
+                propertyName: 'terminate',
+                metadataName: EffectMetadataType.EFFECT_TERMINATE_METADATA
+            }, service)).toBeTruthy();
         });
     });
 });

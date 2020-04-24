@@ -1,7 +1,10 @@
 import { Injectable, Inject, Optional, Type } from '@angular/core';
 import { Actions, ofActionSuccessful } from '@ngxs/store';
 import { switchMap, takeUntil, catchError, mergeMap } from 'rxjs/operators';
-import { EFFECT_METADATA, FEATURE_EFFECTS, EFFECT_TERMINATE_METADATA, EFFECT_START_METADATA, EFFECTS_ERROR_HANDLER } from './constans';
+import {
+    FEATURE_EFFECTS,
+    EFFECTS_ERROR_HANDLER
+} from './config/constans';
 import { Observable, of, Subject, pipe, OperatorFunction } from 'rxjs';
 import { EffectMetadataInterface } from './interfaces/effect-metadata.interface';
 import { EffectStartMetadataInterface } from './interfaces/effect-start-metadata.interface';
@@ -9,6 +12,7 @@ import { EffectTerminateMetadataInterface } from './interfaces/effect-terminate-
 import { EffectErrorHandlerInterface } from './interfaces/effect-error-handler.interface';
 import { setMethodTrap, hasMetadata } from './utils';
 import { ActionContext } from '@ngxs/store/src/actions-stream';
+import { EffectMetadataType } from './config/effect-metadata-type.enum';
 
 @Injectable()
 export class EffectStarterService {
@@ -24,9 +28,10 @@ export class EffectStarterService {
         }
 
         this.effectsClasses.forEach(target => {
-            const effectsMetadata: EffectMetadataInterface<any, any>[] = target.constructor[EFFECT_METADATA];
-            const effectsStartMetadata: EffectStartMetadataInterface[] = target.constructor[EFFECT_START_METADATA];
-            const effectsTerminateMetadata: EffectTerminateMetadataInterface[] = target.constructor[EFFECT_TERMINATE_METADATA];
+            const effectsMetadata: EffectMetadataInterface<any, any>[] = target.constructor[EffectMetadataType.EFFECT_METADATA];
+            const effectsStartMetadata: EffectStartMetadataInterface[] = target.constructor[EffectMetadataType.EFFECT_START_METADATA];
+            const effectsTerminateMetadata: EffectTerminateMetadataInterface[] =
+                target.constructor[EffectMetadataType.EFFECT_TERMINATE_METADATA];
             const onStart$ = new Subject<void>();
             const onTerminate$ = new Subject<void>();
             let hasStartHook = false;

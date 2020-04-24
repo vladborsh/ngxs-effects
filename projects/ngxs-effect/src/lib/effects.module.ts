@@ -1,6 +1,6 @@
 import { NgModule, ModuleWithProviders, Type } from '@angular/core';
 import 'reflect-metadata';
-import { FEATURE_EFFECTS } from './constans';
+import { FEATURE_EFFECTS } from './config/constans';
 import { EffectStarterService } from './effect-starter.service';
 
 // @dynamic
