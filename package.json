@@ -38,9 +38,9 @@
     "ngxs-effect:lint": "npx eslint -c .eslintrc.js 'projects/ngxs-effect/**/*.ts' --fix",
     "ngxs-effect:test:watch": "ng test ngxs-effect",
     "release": "standard-version",
-    "release:patch": "npm run release -- --release-as patch",
-    "release:minor": "npm run release -- --release-as minor",
-    "release:major": "npm run release -- --release-as major",
+    "release:patch": "npm run build && npm run release -- --release-as patch",
+    "release:minor": "npm run build && npm run release -- --release-as minor",
+    "release:major": "npm run build && npm run release -- --release-as major",
     "publish": "npm publish"
   },
   "dependencies": {
