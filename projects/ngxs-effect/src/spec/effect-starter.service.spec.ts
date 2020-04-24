@@ -12,6 +12,7 @@ import { EffectStarterService } from '../lib/effect-starter.service';
 import { InjectionToken } from '@angular/core';
 import { tap } from 'rxjs/operators';
 import { of, Observable } from 'rxjs';
+import { EffectsCatchError } from '../lib/effect-catch-error.decorator';
 
 class ActionA {
     static type = 'Action A';
@@ -282,7 +283,40 @@ describe('EffectStarterService', () => {
         }));
     });
 
-    describe('should notify error custom error handler about errors', () => {
+    describe('should notify error handler about errors', () => {
+        beforeEach(() => {
+            class EffectsStub {
+                @Effect(ActionA)
+                a(): void {
+                    throw new Error('test-error');
+                }
+
+                @EffectsCatchError()
+                catchError(error): void {
+                    result = error.message;
+                }
+            }
+
+            TestBed.configureTestingModule({
+                providers: [
+                    { provide: USER_DEFINED_EFFECT, useClass: EffectsStub },
+                ],
+                imports: [
+                    NgxsModule.forRoot([StateStub]),
+                    NgxsEffectsModule,
+                    NgxsEffectsModule.forFeature(EffectsStub),
+                ],
+            });
+        });
+
+        it('should catch errors with error catcher decorated method', () => {
+            const store: Store = TestBed.get(Store);
+            store.dispatch(new ActionA({ id: 'test-id', name: 'test-name'}));
+            expect(result).toEqual('test-error');
+        });
+    });
+
+    describe('should notify custom global error handler about errors', () => {
         beforeEach(() => {
             class EffectsStub {
                 @Effect(ActionA)

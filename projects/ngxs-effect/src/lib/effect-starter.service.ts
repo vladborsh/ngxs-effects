@@ -5,7 +5,7 @@ import {
     FEATURE_EFFECTS,
     EFFECTS_ERROR_HANDLER
 } from './config/constans';
-import { Observable, of, Subject, pipe, OperatorFunction } from 'rxjs';
+import { Observable, of, Subject, pipe, OperatorFunction, throwError } from 'rxjs';
 import { EffectMetadataInterface } from './interfaces/effect-metadata.interface';
 import { EffectStartMetadataInterface } from './interfaces/effect-start-metadata.interface';
 import { EffectTerminateMetadataInterface } from './interfaces/effect-terminate-metadata.interface';
@@ -13,6 +13,7 @@ import { EffectErrorHandlerInterface } from './interfaces/effect-error-handler.i
 import { setMethodTrap, hasMetadata } from './utils';
 import { ActionContext } from '@ngxs/store/src/actions-stream';
 import { EffectMetadataType } from './config/effect-metadata-type.enum';
+import { EffectCatchErrorMetadataInterface } from './interfaces/effect-catch-error-metadata.interface';
 
 @Injectable()
 export class EffectStarterService {
@@ -32,6 +33,8 @@ export class EffectStarterService {
             const effectsStartMetadata: EffectStartMetadataInterface[] = target.constructor[EffectMetadataType.EFFECT_START_METADATA];
             const effectsTerminateMetadata: EffectTerminateMetadataInterface[] =
                 target.constructor[EffectMetadataType.EFFECT_TERMINATE_METADATA];
+            const effectsCatchErrorMetadata: EffectCatchErrorMetadataInterface[] =
+                target.constructor[EffectMetadataType.EFFECT_CATCH_ERROR_METADATA];
             const onStart$ = new Subject<void>();
             const onTerminate$ = new Subject<void>();
             let hasStartHook = false;
@@ -62,6 +65,7 @@ export class EffectStarterService {
                             target,
                             hasStartHook ? onStart$ : of(null),
                             onTerminate$,
+                            effectsCatchErrorMetadata,
                         ),
                     );
             }
@@ -73,13 +77,14 @@ export class EffectStarterService {
         target: Type<T>,
         onStart$: Observable<void>,
         onDispose$: Observable<void>,
+        onCatchErrorHandlers: EffectCatchErrorMetadataInterface[],
     ): void {
         onStart$
             .pipe(
                 switchMap(() =>
                     this.actions$
                         .pipe(
-                            this.setupActionEffectProcessor(metadata, target),
+                            this.setupActionEffectProcessor(metadata, target, onCatchErrorHandlers),
                             takeUntil(onDispose$),
                         )
                 )
@@ -90,30 +95,54 @@ export class EffectStarterService {
     private setupActionEffectProcessor<T, Action>(
         metadata: EffectMetadataInterface<any, any>,
         target: Type<T>,
+        onCatchErrorHandlers: EffectCatchErrorMetadataInterface[]
     ): OperatorFunction<ActionContext<Action>, Observable<any>> {
         return pipe(
             ofActionSuccessful(metadata.action),
-            mergeMap((actionObject: Action) => this.executeEffect$(actionObject, metadata.propertyName, target)),
-            catchError((error) => this.catchEffectError$(error, metadata.propertyName, metadata.action.name)),
+            mergeMap((actionObject: Action) =>
+                this.executeEffect$(actionObject, metadata.propertyName, target)
+                    .pipe(
+                        catchError((error) => (onCatchErrorHandlers && onCatchErrorHandlers.length)
+                            ? this.catchEffectError$(error, target, onCatchErrorHandlers)
+                            : throwError(error)),
+                    )
+            ),
+            catchError((error) => this.catchEffectErrorGlobal$(error, metadata.propertyName, metadata.action.name)),
         );
     }
 
     private executeEffect$<T, Action>(actionObject: Action, propertyName: string, target: Type<T>): Observable<any> {
-        const effectResult = target[propertyName](actionObject);
+        try {
+            const effectResult = target[propertyName](actionObject);
 
-        if (effectResult && typeof effectResult.subscribe === 'function') {
-            return effectResult;
-        } else {
-            return of(effectResult);
+            if (effectResult && typeof effectResult.subscribe === 'function') {
+                return effectResult;
+            } else {
+                return of(effectResult);
+            }
+        } catch (error) {
+            return throwError(error);
         }
     }
 
-    private catchEffectError$(error: Error, propertyName: string, actionName: string): Observable<any> {
-        console.warn(`Error occurred in [${propertyName}:${actionName}] effect`);
-        console.warn(error);
+    private catchEffectError$<T>(
+        error: Error,
+        target: Type<T>,
+        onCatchErrorHandlers: EffectCatchErrorMetadataInterface[],
+    ): Observable<any> {
+        onCatchErrorHandlers
+            .filter(catchErrorHandler => target[catchErrorHandler.propertyName])
+            .forEach(catchErrorHandler => target[catchErrorHandler.propertyName](error));
 
+        return of(null);
+    }
+
+    private catchEffectErrorGlobal$(error: Error, propertyName: string, actionName: string): Observable<any> {
         if (this.effectErrorHandler && typeof this.effectErrorHandler.onError === 'function') {
             this.effectErrorHandler.onError(error);
+        } else {
+            console.warn(`Error occurred in [${propertyName}:${actionName}] effect`);
+            console.warn(error);
         }
 
         return of(null);
