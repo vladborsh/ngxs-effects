@@ -351,6 +351,39 @@ describe('EffectStarterService', () => {
         });
     });
 
+    describe('should notify notify in condole about errors if custom global error handler not found', () => {
+        const error = new Error('test-error');
+        let errorResult: Error;
+
+        beforeEach(() => {
+            class EffectsStub {
+                @Effect(ActionA)
+                a(): void {
+                    throw error;
+                }
+            }
+
+            window.console.warn = (errorObj: any): void => errorResult = errorObj;
+
+            TestBed.configureTestingModule({
+                providers: [
+                    { provide: USER_DEFINED_EFFECT, useClass: EffectsStub },
+                ],
+                imports: [
+                    NgxsModule.forRoot([StateStub]),
+                    NgxsEffectsModule,
+                    NgxsEffectsModule.forFeature(EffectsStub),
+                ],
+            });
+        });
+
+        it('should notify', () => {
+            const store: Store = TestBed.get(Store);
+            store.dispatch(new ActionA({ id: 'test-id', name: 'test-name'}));
+            expect(errorResult).toEqual(error);
+        });
+    });
+
     describe('should correctly works without any effects', () => {
         beforeEach(() => {
             TestBed.configureTestingModule({

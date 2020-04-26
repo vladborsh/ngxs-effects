@@ -10,20 +10,16 @@ export function hasMetadataProp<T>(target: Type<T>, propName: string): boolean {
 export function setMethodTrap<T extends {}>(targetObject: T, trappedKey: string, callback: (arg: any) => any): void {
     const originMethod = targetObject[trappedKey];
 
-    if (typeof originMethod === 'function') {
-        Object.getPrototypeOf(targetObject)[trappedKey] = function(...args) {
-            const result = originMethod.apply(this, args);
-            callback(result);
+    Object.getPrototypeOf(targetObject)[trappedKey] = function(...args) {
+        const result = originMethod.apply(this, args);
+        callback(result);
 
-            return result;
-        };
-    }
+        return result;
+    };
 }
 
 export function hasMetadata<T, Args, A>(
     metadata: EffectMetadataInterface<Args, A> | EffectStartMetadataInterface | EffectTerminateMetadataInterface, target: Type<T>
 ): boolean {
-    return metadata
-        && hasMetadataProp(target, metadata.propertyName)
-        && typeof target[metadata.propertyName] === 'function';
+    return metadata && hasMetadataProp(target, metadata.propertyName);
 }
