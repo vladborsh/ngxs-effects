@@ -202,7 +202,26 @@ export class PonyListComponent implements OnInit, OnDestroy {
 
 ## Error handling
 
-an error that can happen during the operation of the effect will stop the processing of actions on the method where it occurred. other effects in the same service continue to work. in order to catch errors occurring in the effects you can define your ```EFFECTS_ERROR_HANDLER```
+Periodically, effects can lead to errors. An error that can happen during the operation of the effect will stop the processing of actions on the method where it occurred. Other effects in the same service continue to work. Шn order to correctly handle these errors in the same class where the effect is declared, we need a special tool
+
+For that reasons you can use ```EffectsCatchError```
+
+```typescript
+@Injectable()
+class PonyEffectsService {
+
+    // ...
+
+    @EffectsCatchError()
+    onTerminate(): void {
+        console.log('PonyEffects terminated...');
+    }
+}
+```
+
+## Global error handling
+
+In order to catch errors occurring in all the effects services you can define your ```EFFECTS_ERROR_HANDLER```
 
 First you need to implement ```EffectErrorHandlerInterface```
 
@@ -230,19 +249,15 @@ Next uoy need to provide this services with ```EFFECTS_ERROR_HANDLER``` token
 export class AppModule {}
 ```
 
-## Contribute
+## Contributing and development
 
 ### Start
 
-Install dependencies
+Install project
 
 ```bash
+git clone https://github.com/vladborsh/ngxs-effects.git
 npm i
-```
-
-Before starting local development and serving app you need to build library locally
-
-```bash
 npm run build
 ```
 
