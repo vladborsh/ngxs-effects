@@ -40,8 +40,7 @@
     "release": "standard-version",
     "release:patch": "npm run build && npm run release -- --release-as patch",
     "release:minor": "npm run build && npm run release -- --release-as minor",
-    "release:major": "npm run build && npm run release -- --release-as major",
-    "publish": "npm publish"
+    "release:major": "npm run build && npm run release -- --release-as major"
   },
   "dependencies": {
     "@angular/animations": "~8.2.0",
