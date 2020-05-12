@@ -12,6 +12,7 @@ The main goal is to gracefully separate the effects logic from the definition of
 * 🚀 Watch [live demo](https://stackblitz.com/github/vladborsh/ngxs-effects-demo?file=src%2Fapp%2Fcustomer%2Fcustomer-effects%2Fcustomer-effects.service.ts) 
 * 📖 Check our [documentation](https://github.com/vladborsh/ngxs-effects#quick-start)
 * 🐞 Report [issues](https://github.com/vladborsh/ngxs-effects/issues/new/choose)
+* ✨ Medium [post](https://medium.com/@v.borsh.io/how-to-deal-with-side-effects-in-ngxs-1edc65e321ae)
 
 ## Features
 
@@ -202,7 +203,7 @@ export class PonyListComponent implements OnInit, OnDestroy {
 
 ## Error handling
 
-Periodically, effects can lead to errors. An error that can happen during the operation of the effect will stop the processing of actions on the method where it occurred. Other effects in the same service continue to work. Шn order to correctly handle these errors in the same class where the effect is declared, we need a special tool
+Periodically, effects can lead to errors. An error that can happen during the operation of the effect will stop the processing of actions on the method where it occurred. Other effects in the same service continue to work. In order to correctly handle these errors in the same class where the effect is declared, we need a special tool
 
 For that reasons you can use ```EffectsCatchError```
 
@@ -213,8 +214,8 @@ class PonyEffectsService {
     // ...
 
     @EffectsCatchError()
-    onTerminate(): void {
-        console.log('PonyEffects terminated...');
+    onError(error: Error): void {
+        console.log('PonyEffects error', error);
     }
 }
 ```
