@@ -1,10 +1,7 @@
 import { Injectable, Inject, Optional, Type } from '@angular/core';
 import { Actions, ofActionSuccessful } from '@ngxs/store';
 import { switchMap, takeUntil, catchError, mergeMap } from 'rxjs/operators';
-import {
-    FEATURE_EFFECTS,
-    EFFECTS_ERROR_HANDLER
-} from './config/constans';
+import { FEATURE_EFFECTS, EFFECTS_ERROR_HANDLER } from './config/constants';
 import { Observable, of, Subject, pipe, OperatorFunction, throwError } from 'rxjs';
 import { EffectMetadataInterface } from './interfaces/effect-metadata.interface';
 import { EffectStartMetadataInterface } from './interfaces/effect-start-metadata.interface';
@@ -15,7 +12,9 @@ import { ActionContext } from '@ngxs/store/src/actions-stream';
 import { EffectMetadataType } from './config/effect-metadata-type.enum';
 import { EffectCatchErrorMetadataInterface } from './interfaces/effect-catch-error-metadata.interface';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class EffectStarterService {
     constructor(
         private actions$: Actions,
