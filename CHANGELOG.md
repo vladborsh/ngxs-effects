@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.0.0](https://github.com/vladborsh/ngxs-effects/compare/v1.0.3...v2.0.0) (2020-06-05)
+
+
+### Features
+
+* **global:** ivy compatibility ([7305b4e](https://github.com/vladborsh/ngxs-effects/commit/7305b4e55ccaed63550f57c5d66d81adb8a8e44e)), closes [#2](https://github.com/vladborsh/ngxs-effects/issues/2)
+
 ### [1.0.3](https://github.com/vladborsh/ngxs-effects/compare/v1.0.2...v1.0.3) (2020-06-05)
 
 

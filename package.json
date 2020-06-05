@@ -1,6 +1,6 @@
 {
   "name": "ngxs-effects",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/vladborsh/ngxs-effects.git"
@@ -37,7 +37,7 @@
     "ngxs-effect:test": "ng test ngxs-effect --configuration=ci",
     "ngxs-effect:lint": "npx eslint -c .eslintrc.js 'projects/ngxs-effect/**/*.ts' --fix",
     "ngxs-effect:test:watch": "ng test ngxs-effect",
-    "prerelease": "npm run lint && npm run test && npm run build",
+    "prerelease": "npm run lint && npm run ngxs-effect:test && npm run build",
     "release": "standard-version",
     "release:patch": "npm run prerelease && npm run release -- --release-as patch",
     "release:minor": "npm run prerelease && npm run release -- --release-as minor",
