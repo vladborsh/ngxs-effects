@@ -10,7 +10,7 @@ export class NgxsEffectsModule {
         effectStarterService.start();
     }
 
-    static forFeature(...effectsClasses: Type<any>[]): ModuleWithProviders {
+    static forFeature(...effectsClasses: Type<any>[]): ModuleWithProviders<NgxsEffectsModule> {
         return {
             ngModule: NgxsEffectsModule,
             providers: [
