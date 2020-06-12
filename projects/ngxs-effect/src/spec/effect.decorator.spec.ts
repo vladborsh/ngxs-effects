@@ -131,4 +131,52 @@ describe('Effect Decorator', () => {
         });
     });
 
+    describe('should set metadata for multiple actions by single decorated method', () => {
+        beforeEach(() => {
+            class EffectsStub {
+                @Effect(ActionA, ActionB)
+                a({payload}: ActionA | ActionB): void {
+                    result = payload.id;
+                }
+            }
+
+            TestBed.configureTestingModule({
+                providers: [{ provide: USER_DEFINED_EFFECT, useClass: EffectsStub }],
+                imports: [
+                    NgxsModule.forRoot([StateStub]),
+                    NgxsEffectsModule,
+                    NgxsEffectsModule.forFeature(EffectsStub),
+                ],
+            });
+        });
+
+        it('should not remove original method', () => {
+            const service = TestBed.get(USER_DEFINED_EFFECT);
+
+            expect(service.a).toBeDefined();
+        });
+
+        it('should not redefine original method behavior', () => {
+            const service = TestBed.get(USER_DEFINED_EFFECT);
+
+            service.a(new ActionA({ id: 'test-id', name: 'test-name'}));
+            expect(result).toEqual('test-id');
+        });
+
+        it('should set metadata', () => {
+            const service = TestBed.get(USER_DEFINED_EFFECT);
+
+            expect(hasMetadata({
+                propertyName: 'a',
+                action: ActionA,
+                metadataName: EffectMetadataType.EFFECT_METADATA,
+            }, service)).toBeTruthy();
+            expect(hasMetadata({
+                propertyName: 'a',
+                action: ActionB,
+                metadataName: EffectMetadataType.EFFECT_METADATA,
+            }, service)).toBeTruthy();
+        });
+    });
+
 });
