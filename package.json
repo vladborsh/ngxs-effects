@@ -39,9 +39,9 @@
     "ngxs-effect:test:watch": "ng test ngxs-effect",
     "preversion": "npm run lint && npm run ngxs-effect:test && npm run build",
     "version": "standard-version",
-    "release:patch": "npm run version && npm run release -- --release-as patch",
-    "release:minor": "npm run version && npm run release -- --release-as minor",
-    "release:major": "npm run version && npm run release -- --release-as major"
+    "release:patch": "npm run version -- --release-as patch",
+    "release:minor": "npm run version -- --release-as minor",
+    "release:major": "npm run version -- --release-as major"
   },
   "dependencies": {
     "@angular/animations": "~9.1.9",
