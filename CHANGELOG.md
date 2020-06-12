@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.0.1](https://github.com/vladborsh/ngxs-effects/compare/v2.0.0...v2.0.1) (2020-06-12)
+
+
+### Bug Fixes
+
+* secure access to metadata by private symbols ([9f25193](https://github.com/vladborsh/ngxs-effects/commit/9f2519302c568bb4ef504547260d25c83bb05cb1))
+
 ## [2.0.0](https://github.com/vladborsh/ngxs-effects/compare/v1.0.3...v2.0.0) (2020-06-05)
 
 
