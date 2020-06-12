@@ -1,3 +1,5 @@
+<button [routerLink]="[ '/..' ]"><< Back</button>
+
 <div *ngFor="let customer of customersList$ | async">
   {{ customer.name }}
 </div>

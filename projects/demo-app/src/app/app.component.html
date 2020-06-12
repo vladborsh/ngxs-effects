@@ -1,9 +1,8 @@
-<div *ngIf="showCustomerList$ | async">
-  <app-customer-list></app-customer-list>
-</div>
 <div>
   <button (click)="addCustomer()">+ Add customer</button>
 </div>
 <div>
-  <button (click)="toggleCustomerList()">Toggle customers</button>
+  <button [routerLink]="[ '/customer' ]">Go to customers</button>
 </div>
+<router-outlet></router-outlet>
+
