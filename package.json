@@ -37,11 +37,11 @@
     "ngxs-effect:test": "ng test ngxs-effect --configuration=ci",
     "ngxs-effect:lint": "npx eslint -c .eslintrc.js 'projects/ngxs-effect/**/*.ts' --fix",
     "ngxs-effect:test:watch": "ng test ngxs-effect",
-    "prerelease": "npm run lint && npm run ngxs-effect:test && npm run build",
-    "release": "standard-version",
-    "release:patch": "npm run prerelease && npm run release -- --release-as patch",
-    "release:minor": "npm run prerelease && npm run release -- --release-as minor",
-    "release:major": "npm run prerelease && npm run release -- --release-as major"
+    "preversion": "npm run lint && npm run ngxs-effect:test && npm run build",
+    "version": "standard-version",
+    "release:patch": "npm run version && npm run release -- --release-as patch",
+    "release:minor": "npm run version && npm run release -- --release-as minor",
+    "release:major": "npm run version && npm run release -- --release-as major"
   },
   "dependencies": {
     "@angular/animations": "~9.1.9",
