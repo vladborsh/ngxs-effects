@@ -1,6 +1,7 @@
 import { EffectMetadataInterface } from './interfaces/effect-metadata.interface';
 import { Type } from '@angular/core';
 import { EffectMetadataType } from './config/effect-metadata-type.enum';
+import { EFFECT_METADATA } from './config/constants';
 
 export function Effect<EClassType, ArgsType, ReturnType, ActionObject>(
     action: Type<ActionObject>
@@ -16,10 +17,10 @@ export function Effect<EClassType, ArgsType, ReturnType, ActionObject>(
             metadataName: EffectMetadataType.EFFECT_METADATA,
         };
 
-        if (target.constructor.hasOwnProperty(EffectMetadataType.EFFECT_METADATA)) {
-            target.constructor[EffectMetadataType.EFFECT_METADATA].push(metadata);
+        if (target.constructor.hasOwnProperty(EFFECT_METADATA)) {
+            target.constructor[EFFECT_METADATA].push(metadata);
         } else {
-            Object.defineProperty(target.constructor, EffectMetadataType.EFFECT_METADATA, {
+            Object.defineProperty(target.constructor, EFFECT_METADATA, {
                 value: [metadata],
             });
         }

@@ -21,7 +21,7 @@
     ],
     "paths": {
       "ngxs-effects": [
-        "dist/ngxs-effect/bundles/ngxs-effect.umd.min.js"
+        "projects/ngxs-effect/src/index.ts"
       ]
     },
     "rootDir": "."

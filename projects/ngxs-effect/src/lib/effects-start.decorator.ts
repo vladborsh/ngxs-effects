@@ -1,5 +1,6 @@
 import { EffectStartMetadataInterface } from './interfaces/effect-start-metadata.interface';
 import { EffectMetadataType } from './config/effect-metadata-type.enum';
+import { EFFECT_START_METADATA } from './config/constants';
 
 export function EffectsStart<EClassType, ReturnType, ActionObject>() {
     return (
@@ -12,10 +13,10 @@ export function EffectsStart<EClassType, ReturnType, ActionObject>() {
             metadataName: EffectMetadataType.EFFECT_START_METADATA,
         };
 
-        if (target.constructor.hasOwnProperty(EffectMetadataType.EFFECT_START_METADATA)) {
-            target.constructor[EffectMetadataType.EFFECT_START_METADATA].push(metadata);
+        if (target.constructor.hasOwnProperty(EFFECT_START_METADATA)) {
+            target.constructor[EFFECT_START_METADATA].push(metadata);
         } else {
-            Object.defineProperty(target.constructor, EffectMetadataType.EFFECT_START_METADATA, {
+            Object.defineProperty(target.constructor, EFFECT_START_METADATA, {
                 value: [metadata],
             });
         }

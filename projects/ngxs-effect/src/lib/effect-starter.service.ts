@@ -1,10 +1,6 @@
 import { Injectable, Inject, Optional, Type } from '@angular/core';
 import { Actions, ofActionSuccessful } from '@ngxs/store';
 import { switchMap, takeUntil, catchError, mergeMap } from 'rxjs/operators';
-import {
-    FEATURE_EFFECTS,
-    EFFECTS_ERROR_HANDLER
-} from './config/constans';
 import { Observable, of, Subject, pipe, OperatorFunction, throwError } from 'rxjs';
 import { EffectMetadataInterface } from './interfaces/effect-metadata.interface';
 import { EffectStartMetadataInterface } from './interfaces/effect-start-metadata.interface';
@@ -12,8 +8,9 @@ import { EffectTerminateMetadataInterface } from './interfaces/effect-terminate-
 import { EffectErrorHandlerInterface } from './interfaces/effect-error-handler.interface';
 import { setMethodTrap, hasMetadata } from './utils';
 import { ActionContext } from '@ngxs/store/src/actions-stream';
-import { EffectMetadataType } from './config/effect-metadata-type.enum';
 import { EffectCatchErrorMetadataInterface } from './interfaces/effect-catch-error-metadata.interface';
+import { FEATURE_EFFECTS, EFFECTS_ERROR_HANDLER } from './config/tokens';
+import { EFFECT_METADATA, EFFECT_START_METADATA, EFFECT_CATCH_ERROR_METADATA, EFFECT_TERMINATE_METADATA } from './config/constants';
 
 @Injectable()
 export class EffectStarterService {
@@ -29,12 +26,12 @@ export class EffectStarterService {
         }
 
         this.effectsClasses.forEach(target => {
-            const effectsMetadata: EffectMetadataInterface<any, any>[] = target.constructor[EffectMetadataType.EFFECT_METADATA];
-            const effectsStartMetadata: EffectStartMetadataInterface[] = target.constructor[EffectMetadataType.EFFECT_START_METADATA];
+            const effectsMetadata: EffectMetadataInterface<any, any>[] = target.constructor[EFFECT_METADATA];
+            const effectsStartMetadata: EffectStartMetadataInterface[] = target.constructor[EFFECT_START_METADATA];
             const effectsTerminateMetadata: EffectTerminateMetadataInterface[] =
-                target.constructor[EffectMetadataType.EFFECT_TERMINATE_METADATA];
+                target.constructor[EFFECT_TERMINATE_METADATA];
             const effectsCatchErrorMetadata: EffectCatchErrorMetadataInterface[] =
-                target.constructor[EffectMetadataType.EFFECT_CATCH_ERROR_METADATA];
+                target.constructor[EFFECT_CATCH_ERROR_METADATA];
             const onStart$ = new Subject<void>();
             const onTerminate$ = new Subject<void>();
             let hasStartHook = false;
