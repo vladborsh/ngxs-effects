@@ -1,5 +1,5 @@
 /*
-* Public API Surface of ngxs-effect
+* Public API Surface of ngxs-effects
 */
 export { Effect } from './lib/effect.decorator';
 export { EffectsStart } from './lib/effects-start.decorator';

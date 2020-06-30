@@ -3,35 +3,35 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ngxs-effect": {
+    "ngxs-effects": {
       "projectType": "library",
-      "root": "projects/ngxs-effect",
-      "sourceRoot": "projects/ngxs-effect/src",
+      "root": "projects/ngxs-effects",
+      "sourceRoot": "projects/ngxs-effects/src",
       "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
-            "tsConfig": "projects/ngxs-effect/tsconfig.lib.json",
-            "project": "projects/ngxs-effect/ng-package.json"
+            "tsConfig": "projects/ngxs-effects/tsconfig.lib.json",
+            "project": "projects/ngxs-effects/ng-package.json"
           },
           "configurations": {
             "production": {
-              "tsConfig": "projects/ngxs-effect/tsconfig.lib.prod.json"
+              "tsConfig": "projects/ngxs-effects/tsconfig.lib.prod.json"
             }
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/ngxs-effect/src/test.ts",
-            "tsConfig": "projects/ngxs-effect/tsconfig.spec.json",
-            "karmaConfig": "projects/ngxs-effect/karma.conf.js"
+            "main": "projects/ngxs-effects/src/test.ts",
+            "tsConfig": "projects/ngxs-effects/tsconfig.spec.json",
+            "karmaConfig": "projects/ngxs-effects/karma.conf.js"
           },
           "configurations": {
             "default": {},
             "ci": {
-              "karmaConfig": "projects/ngxs-effect/karma.conf.ci.js",
+              "karmaConfig": "projects/ngxs-effects/karma.conf.ci.js",
               "sourceMap": true,
               "codeCoverage": true
             },
@@ -48,8 +48,8 @@
           "builder": "@angular-devkit/build-angular:eslint",
           "options": {
             "tsConfig": [
-              "projects/ngxs-effect/tsconfig.lib.json",
-              "projects/ngxs-effect/tsconfig.spec.json"
+              "projects/ngxs-effects/tsconfig.lib.json",
+              "projects/ngxs-effects/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"
@@ -179,5 +179,5 @@
         }
       }
     }},
-  "defaultProject": "ngxs-effect"
+  "defaultProject": "ngxs-effects"
 }

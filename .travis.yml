@@ -8,14 +8,14 @@ jobs:
     - stage: test
       script: 
         - npm run demo-app:lint
-        - npm run ngxs-effect:lint
-        - npm run ngxs-effect:test
-        - npm run ngxs-effect:build
+        - npm run ngxs-effects:lint
+        - npm run ngxs-effects:test
+        - npm run ngxs-effects:build
     - stage: master
       if: branch = master
       script:
-        - npm run ngxs-effect:test
-        - npm run ngxs-effect:build
+        - npm run ngxs-effects:test
+        - npm run ngxs-effects:build
         - npm run coveralls
 
   

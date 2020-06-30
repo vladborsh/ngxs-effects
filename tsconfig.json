@@ -21,7 +21,7 @@
     ],
     "paths": {
       "ngxs-effects": [
-        "projects/ngxs-effect/src/index.ts"
+        "projects/ngxs-effects/src/index.ts"
       ]
     },
     "rootDir": "."

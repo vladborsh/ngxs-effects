@@ -5,10 +5,10 @@
     "type": "git",
     "url": "git+https://github.com/vladborsh/ngxs-effects.git"
   },
-  "main": "./dist/ngxs-effect/bundles/ngxs-effect.umd.js",
-  "types": "./dist/ngxs-effect/ngxs-effect.d.ts",
+  "main": "./dist/ngxs-effects/bundles/ngxs-effects.umd.js",
+  "types": "./dist/ngxs-effects/ngxs-effects.d.ts",
   "files": [
-    "dist/ngxs-effect"
+    "dist/ngxs-effects"
   ],
   "keywords": [
     "redux",
@@ -24,20 +24,20 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve demo-app",
-    "lint": "npm run ngxs-effect:lint",
-    "test": "npm run ngxs-effect:test:watch",
-    "build": "npm run ngxs-effect:build",
+    "lint": "npm run ngxs-effects:lint",
+    "test": "npm run ngxs-effects:test:watch",
+    "build": "npm run ngxs-effects:build",
     "commit": "git-cz",
-    "coveralls": "cat coverage/ngxs-effect/lcov.info | coveralls",
+    "coveralls": "cat coverage/ngxs-effects/lcov.info | coveralls",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "demo-app:build": "ng build demo-app",
     "demo-app:test": "ng test demo-app",
     "demo-app:lint": "npx eslint -c .eslintrc.js 'projects/demo-app/**/*.ts' --fix",
-    "ngxs-effect:build": "ng build ngxs-effect",
-    "ngxs-effect:test": "ng test ngxs-effect --configuration=ci",
-    "ngxs-effect:lint": "npx eslint -c .eslintrc.js 'projects/ngxs-effect/**/*.ts' --fix",
-    "ngxs-effect:test:watch": "ng test ngxs-effect",
-    "preversion": "npm run lint && npm run ngxs-effect:test && npm run build",
+    "ngxs-effects:build": "ng build ngxs-effects",
+    "ngxs-effects:test": "ng test ngxs-effects --configuration=ci",
+    "ngxs-effects:lint": "npx eslint -c .eslintrc.js 'projects/ngxs-effects/**/*.ts' --fix",
+    "ngxs-effects:test:watch": "ng test ngxs-effects",
+    "preversion": "npm run lint && npm run ngxs-effects:test && npm run build",
     "version": "standard-version",
     "release:patch": "npm run version -- --release-as patch",
     "release:minor": "npm run version -- --release-as minor",
