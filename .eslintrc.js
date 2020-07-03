@@ -116,28 +116,8 @@ module.exports = {
             "error",
             {
                 "allow": [
-                    "log",
-                    "dirxml",
                     "warn",
                     "error",
-                    "dir",
-                    "timeLog",
-                    "assert",
-                    "clear",
-                    "count",
-                    "countReset",
-                    "group",
-                    "groupCollapsed",
-                    "groupEnd",
-                    "table",
-                    "Console",
-                    "markTimeline",
-                    "profile",
-                    "profileEnd",
-                    "timeline",
-                    "timelineEnd",
-                    "timeStamp",
-                    "context"
                 ]
             }
         ],
