@@ -6,6 +6,10 @@ import { hasMetadata } from '../lib/utils';
 import { EffectMetadataType } from '../lib/config/effect-metadata-type.enum';
 import { EffectsCatchError } from '../lib/effect-catch-error.decorator';
 
+interface Catcher {
+    catchError(error: any): void;
+}
+
 class ActionA {
     static type = 'Action A';
     constructor(public payload: { id: string; name: string}) {}
@@ -53,27 +57,27 @@ describe('EffectCatchError Decorator', () => {
                 providers: [{ provide: USER_DEFINED_EFFECT, useClass: EffectsStub }],
                 imports: [
                     NgxsModule.forRoot([StateStub]),
-                    NgxsEffectsModule,
+                    NgxsEffectsModule.forRoot(),
                     NgxsEffectsModule.forFeature(EffectsStub),
                 ],
             });
         });
 
         it('should not remove original method', () => {
-            const service = TestBed.get(USER_DEFINED_EFFECT);
+            const service: Catcher = TestBed.inject<Catcher>(USER_DEFINED_EFFECT);
 
             expect(service.catchError).toBeDefined();
         });
 
         it('should not redefine original method behavior', () => {
-            const service = TestBed.get(USER_DEFINED_EFFECT);
+            const service: Catcher = TestBed.inject<Catcher>(USER_DEFINED_EFFECT);
 
             service.catchError('test');
             expect(result).toEqual('test');
         });
 
         it('should set metadata', () => {
-            const service = TestBed.get(USER_DEFINED_EFFECT);
+            const service: Catcher = TestBed.inject<Catcher>(USER_DEFINED_EFFECT);
 
             expect(hasMetadata({
                 propertyName: 'catchError',
@@ -100,14 +104,14 @@ describe('EffectCatchError Decorator', () => {
                 providers: [{ provide: USER_DEFINED_EFFECT, useClass: EffectsStub }],
                 imports: [
                     NgxsModule.forRoot([StateStub]),
-                    NgxsEffectsModule,
+                    NgxsEffectsModule.forRoot(),
                     NgxsEffectsModule.forFeature(EffectsStub),
                 ],
             });
         });
 
         it('should set metadata for first method', () => {
-            const service = TestBed.get(USER_DEFINED_EFFECT);
+            const service: Catcher = TestBed.inject<Catcher>(USER_DEFINED_EFFECT);
 
             expect(hasMetadata({
                 propertyName: 'catchError1',
@@ -116,7 +120,7 @@ describe('EffectCatchError Decorator', () => {
         });
 
         it('should set metadata for second method', () => {
-            const service = TestBed.get(USER_DEFINED_EFFECT);
+            const service: Catcher = TestBed.inject<Catcher>(USER_DEFINED_EFFECT);
 
             expect(hasMetadata({
                 propertyName: 'catchError2',

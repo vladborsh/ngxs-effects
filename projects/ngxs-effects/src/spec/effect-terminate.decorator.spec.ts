@@ -5,6 +5,10 @@ import { InjectionToken } from '@angular/core';
 import { hasMetadata } from '../lib/utils';
 import { EffectMetadataType } from '../lib/config/effect-metadata-type.enum';
 
+interface Terminator {
+    terminate(): void;
+}
+
 class ActionA {
     static type = 'Action A';
     constructor(public payload: { id: string; name: string}) {}
@@ -43,7 +47,7 @@ describe('Effect Decorator', () => {
         beforeEach(() => {
             class EffectsStub {
                 @EffectsTerminate()
-                stop(): void {
+                terminate(): void {
                     result = 'test';
                 }
             }
@@ -52,29 +56,32 @@ describe('Effect Decorator', () => {
                 providers: [{ provide: USER_DEFINED_EFFECT, useClass: EffectsStub }],
                 imports: [
                     NgxsModule.forRoot([StateStub]),
-                    NgxsEffectsModule,
+                    NgxsEffectsModule.forRoot(),
                     NgxsEffectsModule.forFeature(EffectsStub),
                 ],
             });
         });
 
         it('should not remove original method', () => {
-            const service = TestBed.get(USER_DEFINED_EFFECT);
+            const service = TestBed.inject<Terminator>(USER_DEFINED_EFFECT);
 
-            expect(service.stop).toBeDefined();
+            expect(service.terminate).toBeDefined();
         });
 
         it('should not redefine original method behavior', () => {
-            const service = TestBed.get(USER_DEFINED_EFFECT);
+            const service = TestBed.inject<Terminator>(USER_DEFINED_EFFECT);
 
-            service.stop();
+            service.terminate();
             expect(result).toEqual('test');
         });
 
         it('should set metadata', () => {
-            const service = TestBed.get(USER_DEFINED_EFFECT);
+            const service = TestBed.inject(USER_DEFINED_EFFECT);
 
-            expect(hasMetadata({ propertyName: 'stop', metadataName: EffectMetadataType.EFFECT_TERMINATE_METADATA }, service)).toBeTruthy();
+            expect(hasMetadata({
+                propertyName: 'terminate',
+                metadataName: EffectMetadataType.EFFECT_TERMINATE_METADATA
+            }, service)).toBeTruthy();
         });
     });
 
@@ -96,14 +103,14 @@ describe('Effect Decorator', () => {
                 providers: [{ provide: USER_DEFINED_EFFECT, useClass: EffectsStub }],
                 imports: [
                     NgxsModule.forRoot([StateStub]),
-                    NgxsEffectsModule,
+                    NgxsEffectsModule.forRoot(),
                     NgxsEffectsModule.forFeature(EffectsStub),
                 ],
             });
         });
 
         it('should set metadata for first method', () => {
-            const service = TestBed.get(USER_DEFINED_EFFECT);
+            const service = TestBed.inject(USER_DEFINED_EFFECT);
 
             expect(hasMetadata({
                 propertyName: 'stop',
@@ -112,7 +119,7 @@ describe('Effect Decorator', () => {
         });
 
         it('should set metadata for second method', () => {
-            const service = TestBed.get(USER_DEFINED_EFFECT);
+            const service = TestBed.inject(USER_DEFINED_EFFECT);
 
             expect(hasMetadata({
                 propertyName: 'terminate',

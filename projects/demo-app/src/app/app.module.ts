@@ -27,7 +27,7 @@ class AppRoutingModule {}
     imports: [
         BrowserModule,
         NgxsModule.forRoot([], { developmentMode: !environment.production }),
-        // NgxsEffectsModule,
+        NgxsEffectsModule.forRoot(),
         AppRoutingModule,
     ],
     providers: [],

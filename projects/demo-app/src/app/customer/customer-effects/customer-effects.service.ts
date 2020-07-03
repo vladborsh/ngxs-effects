@@ -10,7 +10,7 @@ import { Effect, EffectsStart, EffectsTerminate } from 'ngxs-effects';
 export class CustomerEffectsService {
     @Effect(AddCustomer)
     addCustomer({ payload }: AddCustomer): void {
-        console.log(payload);
+        console.warn(payload);
     }
 
     @Effect(AddCustomer)
@@ -18,7 +18,7 @@ export class CustomerEffectsService {
         return of('hello')
             .pipe(
                 map(() => `hello ${payload}`),
-                tap(v => console.log(v)),
+                tap(v => console.warn(v)),
             );
     }
 

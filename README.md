@@ -69,7 +69,7 @@ Next, add a core effects module to the imports of our root module. And also decl
 @NgModule({
     imports: [
         // ...
-        NgxsEffectsModule,
+        NgxsEffectsModule.forRoot(),
         NgxsEffectsModule.forFeature(PonyEffectsService),
     ],
     // ...

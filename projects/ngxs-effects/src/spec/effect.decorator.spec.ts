@@ -52,27 +52,27 @@ describe('Effect Decorator', () => {
                 providers: [{ provide: USER_DEFINED_EFFECT, useClass: EffectsStub }],
                 imports: [
                     NgxsModule.forRoot([StateStub]),
-                    NgxsEffectsModule,
+                    NgxsEffectsModule.forRoot(),
                     NgxsEffectsModule.forFeature(EffectsStub),
                 ],
             });
         });
 
         it('should not remove original method', () => {
-            const service = TestBed.get(USER_DEFINED_EFFECT);
+            const service: any = TestBed.inject(USER_DEFINED_EFFECT);
 
             expect(service.a).toBeDefined();
         });
 
         it('should not redefine original method behavior', () => {
-            const service = TestBed.get(USER_DEFINED_EFFECT);
+            const service: any = TestBed.inject(USER_DEFINED_EFFECT);
 
             service.a(new ActionA({ id: 'test-id', name: 'test-name'}));
             expect(result).toEqual('test-name');
         });
 
         it('should set metadata', () => {
-            const service = TestBed.get(USER_DEFINED_EFFECT);
+            const service = TestBed.inject(USER_DEFINED_EFFECT);
 
             expect(hasMetadata({
                 propertyName: 'a',
@@ -96,27 +96,27 @@ describe('Effect Decorator', () => {
                 providers: [{ provide: USER_DEFINED_EFFECT, useClass: EffectsStub }],
                 imports: [
                     NgxsModule.forRoot([StateStub]),
-                    NgxsEffectsModule,
+                    NgxsEffectsModule.forRoot(),
                     NgxsEffectsModule.forFeature(EffectsStub),
                 ],
             });
         });
 
         it('should not remove original method', () => {
-            const service = TestBed.get(USER_DEFINED_EFFECT);
+            const service: any = TestBed.inject(USER_DEFINED_EFFECT);
 
             expect(service.a).toBeDefined();
         });
 
         it('should not redefine original method behavior', () => {
-            const service = TestBed.get(USER_DEFINED_EFFECT);
+            const service: any = TestBed.inject(USER_DEFINED_EFFECT);
 
             service.a(new ActionA({ id: 'test-id', name: 'test-name'}));
             expect(result).toEqual('test-id');
         });
 
         it('should set metadata', () => {
-            const service = TestBed.get(USER_DEFINED_EFFECT);
+            const service = TestBed.inject(USER_DEFINED_EFFECT);
 
             expect(hasMetadata({
                 propertyName: 'a',
@@ -144,27 +144,27 @@ describe('Effect Decorator', () => {
                 providers: [{ provide: USER_DEFINED_EFFECT, useClass: EffectsStub }],
                 imports: [
                     NgxsModule.forRoot([StateStub]),
-                    NgxsEffectsModule,
+                    NgxsEffectsModule.forRoot(),
                     NgxsEffectsModule.forFeature(EffectsStub),
                 ],
             });
         });
 
         it('should not remove original method', () => {
-            const service = TestBed.get(USER_DEFINED_EFFECT);
+            const service: any = TestBed.inject(USER_DEFINED_EFFECT);
 
             expect(service.a).toBeDefined();
         });
 
         it('should not redefine original method behavior', () => {
-            const service = TestBed.get(USER_DEFINED_EFFECT);
+            const service: any = TestBed.inject(USER_DEFINED_EFFECT);
 
             service.a(new ActionA({ id: 'test-id', name: 'test-name'}));
             expect(result).toEqual('test-id');
         });
 
         it('should set metadata', () => {
-            const service = TestBed.get(USER_DEFINED_EFFECT);
+            const service = TestBed.inject(USER_DEFINED_EFFECT);
 
             expect(hasMetadata({
                 propertyName: 'a',
