@@ -99,7 +99,7 @@
   },
   "standard-version": {
     "scripts": {
-      "postbump": "node scripts/sync-version.js && git add **/package.json"
+      "postbump": "node scripts/sync-version.js && git add **/package.json && npm run commit"
     }
   },
   "config": {
