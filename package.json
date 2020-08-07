@@ -37,7 +37,7 @@
     "release:patch": "npm run version -- --release-as patch",
     "release:minor": "npm run version -- --release-as minor",
     "release:major": "npm run version -- --release-as major",
-    "publish": "npm publish ./dist/ngxs-effects"
+    "publish": "npm run build && npm publish ./dist/ngxs-effects"
   },
   "dependencies": {
     "@angular/animations": "~9.1.9",
