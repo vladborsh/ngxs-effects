@@ -98,6 +98,47 @@ describe('EffectStarterService', () => {
         }));
     });
 
+    describe('should start root effect', () => {
+
+        beforeEach(() => {
+            class EffectsStub {
+                @Effect(ActionA)
+                a({payload}: ActionA): void {
+                    result = payload.name;
+                }
+            }
+
+            TestBed.configureTestingModule({
+                providers: [{ provide: USER_DEFINED_EFFECT, useClass: EffectsStub }],
+                imports: [
+                    NgxsModule.forRoot([StateStub]),
+                    NgxsEffectsModule.forRoot(EffectsStub),
+                ],
+            });
+        });
+
+        it('should inject', () => {
+            const effectStarterService = TestBed.inject(EffectStarterService);
+            expect(effectStarterService).toBeDefined();
+        });
+
+        it('should trigger effects on specific actions', () => {
+            const store: Store = TestBed.inject(Store);
+            store.dispatch(new ActionA({ id: 'test-id', name: 'test-name'}));
+            expect(result).toEqual('test-name');
+        });
+
+        it('should not interrupt action processing', fakeAsync(() => {
+            const store: Store = TestBed.inject(Store);
+            store.dispatch(new ActionA({ id: 'test-id', name: 'test-name'}));
+            let selectResult;
+            store.select(state => state)
+                .subscribe(state => selectResult = state);
+            tick();
+            expect(selectResult).toEqual({ state: { 'test-id': { id: 'test-id', name: 'test-name'} } });
+        }));
+    });
+
     describe('should start observable effect', () => {
         beforeEach(() => {
             class EffectsStub {

@@ -10,3 +10,4 @@ export { NgxsEffectsFeatureModule } from './lib/effects-feature.module';
 export { NgxsEffectsRootModule } from './lib/effects-root.module';
 export { EFFECTS_ERROR_HANDLER } from './lib/config/tokens';
 export { EffectErrorHandlerInterface } from './lib/interfaces/effect-error-handler.interface';
+export { EffectStarterService } from './lib//effect-starter.service';
