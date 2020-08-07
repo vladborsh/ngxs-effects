@@ -28,7 +28,7 @@
     "demo-app:build": "ng build demo-app",
     "demo-app:test": "ng test demo-app",
     "demo-app:lint": "npx eslint -c .eslintrc.js 'projects/demo-app/**/*.ts' --fix",
-    "ngxs-effects:build": "ng build ngxs-effects",
+    "ngxs-effects:build": "ng build ngxs-effects --prod",
     "ngxs-effects:test": "ng test ngxs-effects --configuration=ci",
     "ngxs-effects:lint": "npx eslint -c .eslintrc.js 'projects/ngxs-effects/**/*.ts' --fix",
     "ngxs-effects:test:watch": "ng test ngxs-effects",
