@@ -5,11 +5,6 @@
     "type": "git",
     "url": "git+https://github.com/vladborsh/ngxs-effects.git"
   },
-  "main": "./dist/ngxs-effects/bundles/ngxs-effects.umd.js",
-  "types": "./dist/ngxs-effects/ngxs-effects.d.ts",
-  "files": [
-    "dist/ngxs-effects"
-  ],
   "keywords": [
     "redux",
     "state",
@@ -19,11 +14,11 @@
     "effects",
     "ngxs-effects",
     "ngxs-plugin",
-    "ngxs-ngrxs-effects"
+    "ngxs-ngrx-effects"
   ],
   "scripts": {
     "ng": "ng",
-    "start": "ng serve demo-app",
+    "start": "ng serve demo-app --port 3333",
     "lint": "npm run ngxs-effects:lint",
     "test": "npm run ngxs-effects:test:watch",
     "build": "npm run ngxs-effects:build",
@@ -41,7 +36,8 @@
     "version": "standard-version",
     "release:patch": "npm run version -- --release-as patch",
     "release:minor": "npm run version -- --release-as minor",
-    "release:major": "npm run version -- --release-as major"
+    "release:major": "npm run version -- --release-as major",
+    "publish": "npm publish ./dist/ngxs-effects"
   },
   "dependencies": {
     "@angular/animations": "~9.1.9",
@@ -99,6 +95,11 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged --config ./lint-staged.config.js"
+    }
+  },
+  "standard-version": {
+    "scripts": {
+      "postbump": "node scripts/sync-version.js && git add **/package.json"
     }
   },
   "config": {

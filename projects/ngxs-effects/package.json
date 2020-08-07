@@ -1,10 +1,23 @@
 {
   "name": "ngxs-effects",
-  "version": "0.0.1",
+  "version": "3.0.0",
   "peerDependencies": {
-    "@angular/common": "~8.2.0",
-    "@angular/core": "~8.2.0",
+    "@angular/core": ">=8.2.0",
     "@ngxs/logger-plugin": "~3.6.2",
     "@ngxs/store": "~3.6.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vladborsh/ngxs-effects.git"
+  },
+  "keywords": [
+    "redux",
+    "state",
+    "ngxs",
+    "angular",
+    "ng",
+    "effects",
+    "ngxs-effects",
+    "ngxs-ngrx-effects"
+  ]
 }
